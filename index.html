@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Boba Picker · Berkeley AI Affinity</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&family=IBM+Plex+Sans:wght@400;600&family=IBM+Plex+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+  /* ===== LIVE DEMO: change these, commit on GitHub, watch Vercel redeploy ===== */
+  :root {
+    --accent: #fdb515;      /* try #3b7ea1 or #ff6b9d */
+    --bg: #001a33;
+    --panel: #003262;
+    --text: #f5f0e6;
+    --muted: #8fa4b8;
+  }
+  /* ========================================================================== */
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; min-height: 100vh; display: grid; place-items: center; padding: 24px;
+    font-family: "IBM Plex Sans", system-ui, sans-serif; color: var(--text);
+    background:
+      linear-gradient(rgba(253,181,21,.06) 1px, transparent 1px) 0 0 / 32px 32px,
+      linear-gradient(90deg, rgba(253,181,21,.06) 1px, transparent 1px) 0 0 / 32px 32px,
+      var(--bg);
+  }
+  main { width: 100%; max-width: 520px; }
+  .prompt { font-family: "IBM Plex Mono", monospace; color: var(--muted); font-size: 14px; margin: 0 0 8px; }
+  .cursor { color: var(--accent); animation: blink 1s steps(1) infinite; }
+  @keyframes blink { 50% { opacity: 0; } }
+  h1 { font-family: "Silkscreen", monospace; font-weight: 400; font-size: clamp(32px, 8vw, 48px); line-height: 1.1; margin: 0 0 24px; }
+  h1 span { color: var(--accent); }
+  .card { background: var(--panel); border: 3px solid var(--accent); box-shadow: 6px 6px 0 #8a6200; padding: 24px; }
+  .label { font-family: "Silkscreen", monospace; font-size: 12px; letter-spacing: 2px; color: var(--muted); margin: 0 0 8px; }
+  #order { font-size: 24px; font-weight: 600; min-height: 64px; margin: 0 0 20px; }
+  button {
+    font-family: "Silkscreen", monospace; font-size: 16px; letter-spacing: 1px; cursor: pointer;
+    background: var(--accent); color: var(--bg); border: 3px solid var(--accent);
+    box-shadow: 4px 4px 0 #8a6200; padding: 12px 20px; width: 100%;
+  }
+  button:active { transform: translate(4px, 4px); box-shadow: none; }
+  h2 { font-family: "Silkscreen", monospace; font-weight: 400; font-size: 14px; color: var(--accent); margin: 28px 0 8px; }
+  ul { list-style: none; padding: 0; margin: 0; }
+  li { font-family: "IBM Plex Mono", monospace; font-size: 14px; color: var(--muted); padding: 6px 0; border-bottom: 1px solid rgba(143,164,184,.2); }
+  footer { font-family: "Silkscreen", monospace; font-size: 11px; color: var(--muted); margin-top: 24px; }
+</style>
+</head>
+<body>
+<main>
+  <p class="prompt">~/berkeley/boba-picker <span class="cursor">█</span></p>
+  <h1>BOBA<br><span>PICKER_</span></h1>
+  <div class="card">
+    <p class="label">YOUR ORDER</p>
+    <p id="order">Can't decide? Let the machine choose.</p>
+    <button id="pick">Surprise me</button>
+  </div>
+  <h2>&gt; LAST 5 PICKS</h2>
+  <ul id="history"><li>No picks yet.</li></ul>
+  <footer>Built live at Vibe Coding 101 · Berkeley AI Affinity</footer>
+</main>
+<script>
+  const teas = ["Classic milk tea", "Jasmine green tea", "Taro milk tea", "Thai tea", "Brown sugar milk", "Matcha latte", "Mango green tea", "Oolong milk tea"];
+  const toppings = ["boba", "lychee jelly", "pudding", "red bean", "cheese foam", "aloe vera", "no toppings"];
+  const sweetness = ["0%", "25%", "50%", "75%", "100%"];
+  const pick = (arr) => arr[Math.floor(Math.random() * arr.length)];
+  const history = [];
+
+  document.getElementById("pick").addEventListener("click", () => {
+    const order = `${pick(teas)} with ${pick(toppings)}, ${pick(sweetness)} sweet`;
+    document.getElementById("order").textContent = order;
+    history.unshift(order);
+    history.splice(5);
+    document.getElementById("history").innerHTML = history.map((o) => `<li>${o}</li>`).join("");
+  });
+</script>
+</body>
+</html>
